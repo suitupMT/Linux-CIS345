@@ -1,0 +1,26 @@
+Homework2 Problem 1 
+/* assignments in current class will be different this is reference from previous material
+
+Task: Write a bash script called greeting that will print out "Good morning username " in the morning,
+"Good morning username between 12: 00 and 5:59 and "Good evening username " after 6:00. Substitute the
+user's real first name for username. The first letter of the user's name should be capitalized. Then it should 
+report the user's last time of login and some statistics about your system. Report a total of how many users are 
+logged in then display the user name, real name, and login time in columns with each listed only once. 
+*/
+
+//Script: This is reference code not directly executable, it works but may need formatted to run in command
+
+path=/tmp/hw2prb1
+if [!-d "$path"]
+then
+  mkdir $path
+fi
+
+hour=`date | tr-s''|cut -d'' -f4 | cut -d':' -f1`
+
+name = `whoami`
+firstN =`finger $name| cut -d`:` -f3|head-1|cut-d''-f2`
+
+firstL=`cut-c1<<<$firstN`
+
+//more to finish
