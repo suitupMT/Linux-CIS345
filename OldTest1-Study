@@ -1,0 +1,166 @@
+Linux Old Test 1 Study Guide
+//note this is not executable code rather reference that can be tested, spacing and format may have to be adjusted
+//in the command code to actually execute
+
+1. Write a command to create a subdirectory under your home directory called shared.
+
+	Answer: mkdir shared 
+
+2. Write a command to remove all the blank lines from your phonebook.
+
+	Answer: grep -v "^$" phonebook > tmp; mv tmp phonebook
+
+3. Write a command to set the permissions on your subdirectory called shared so you and your group have read/write access to it.
+
+	Answer: chmod 775 shared
+	
+4. Write a command to copy the file called personnel_record located in /usr/local/docs to your private subdirectory.
+
+	Answer: cp /usr/local/docs/peronnel_records ~/private/personnel_records
+
+5. Write a command to rename the file caleld personnel_records you just coied to per_recs.
+
+	Answer: mv /private/personnel_records private/per_recs 
+
+6. Write a command to set permissions on per_recs so only you can edit it and only your group can read it. 
+
+	Answer: chmod 640 private/per_recs
+	
+7. Write a command that will display every line in per_recs that contains a social security number.
+
+	Answer: grep "[0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9]" private'/per_recs 
+
+8. If we assume that every entry in per_recs contains a social security number and that no one has their 
+   social security number listed  more than once and the social security numbers are unique, 
+   write a command to display the number of peronnel records contained in per_recs. 
+   
+   Answer: grep "[0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9]" private'/per_recs | wc -l
+ 
+9. Write a command(s) to create a file called per_recs_redacted in which every occurrence of a social secuirty number 
+   has been replaced with XXX-XX-XXXX. 
+
+   Answer: sed 's/[0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9]/XXX-XX-XXXX/' private/per_recs > private/per_recs_redacted
+   
+10. Write a command that will tell yo uif the number of unique logged in users exceeds 10 by printing a message in the termianl window.
+
+// test this answer there may be something incorrect here to fix in syntax
+	Answer: if ['who | cut -f1 -d'' | sort | uniq | wc -l' -gt 10];
+			then;
+			echo "more than 10 logged in";
+			fi
+11. Write a command to produce a file called efiles.txt that contains a list of files in /etc whose file name begins with a lower case e.
+	
+	Answer: ls /etc/e* > efiles.txt
+
+12. What command would you use to determine what the recursive option is with chgrp command?
+
+		Answer:  man chgrp
+
+13. Write a command to create a copy of the file called TEXT with all the spaces removed. 
+
+	Answer: cat TEXT | tr -d' ' > TEXT_COPY
+
+14. Write a command to append the current working directory to your environment variable PATH.
+
+	Answer: PATH = $PATH;.
+		
+15. Write a command to copy the directory /usr/local/docs/examples and all of its contents to your shared subdirectory. 
+
+	Answer: cp -r  /usr/local/docs/examples ~/shared
+
+16. Write a comman to display the last six lines of /etc/passwd.
+
+	Answer: tail -6 etc/passwd
+
+example file contets...........file name: students.txt  ,  it is tab delimited 
+	Smith, Bob 		555-1234
+	Jones, Smith	625-7451
+	Clever, Jim Bob 625-1258
+	Ito, Rosemary	555-6565
+	Doe, Mary Jane	624-5888
+	Doe, John		659-6523
+	Doe, Jane		625-4458
+	Dean, Jane		505-2325
+	Smith, Jimmy	625-4587
+	
+17. Write command to sort the file alphabetically by first name. 
+
+	Answer: sort -k2 -t',' students.txt
+
+18. Write command to sort the file numerically 
+
+	Answer: sort -k2 -t'-'-nstudents.txt
+
+19. You need to look up Smith's phone number. Write a command that will display that line of the file.
+
+	grep ",Smith" students.txt
+
+20. Write a command to remove Mary Jane from students.txt
+
+	Answer: grep -v "Mary Jane" students.txt > tmp; mv tmp students.txt
+
+21. Write commands to rearrange the contents of students.txt so the phone number is first followed by the first name,
+	then the last name. Change the delimiters from tabs to spaces. Now append the file new_students.txt onto the end of students.txt.
+	(They are now both in the same format) and sort the resulting file by phone number so it can be used for reverse lookups. 
+
+	Answer:
+		cut -f2 students.txt > numbers
+		cut -f2 -d',' | cut -f1 -d '\t' > firstNames
+		cut -f1 -d',' > lastNames
+		paste numbers firstNames.lastNames > tmp
+		sed 's/\t/''' tmp > students.txt
+		cat new_students.txt >> students.txt
+		sort -k1 -n students.txt>tmp; tmp >students.txt
+		
+22. Write a script that will compute the total disk space used by the contents of the current working directory by adding up the sizes of the individual files in the directory. 
+    Do not include directories. (the size is the fifth field in a long listing)
+	
+	// may want to test this answer
+	Answer: 
+		total = 0
+		for x in -ls -al | tr-s''| cut-d'' -fs'
+		do 
+		  total = 'expr$total + $x'
+		 done
+		 echo "total size used is $total"
+		 
+23. A script called test1 contains the following: 
+
+		example: echo "$2"    answer: 2
+				 ehco "$#"    answer: 8
+				 echo "$0"	  answer: ./test1
+				 echo "$4"	  answer: 5
+				 shift2       
+				 echo "$1"    answer: 34
+				 echo "$4"	  answer: 7
+				 echo "$*"    answer: 34 5 6 7 8 9
+				 echo "$?"    answer: 0
+	the script is call by:
+			./test1 1 2 34 5 6 7 8 9
+			
+	What is the outuput of the script?
+	
+		Answer: 2 8 ./test1 5 34 7 34 5 6 7 8 9 0
+		
+24. Will be matching
+
+	|  used to send the result of one command through another as input 
+	^  the beginning of a line in a regular expression 
+	$  Evaluate the variable that follows 
+	` ` Evaluate the expression enclosed by these quotes
+	; Seperate shell commands on the smae line
+	# Ignore everything that follows this in a bash script
+	< Redirect std in
+	> Redirect std outuput
+	>> Redirect and append stdout
+	\ Ignore special meaning of any character that follows
+	\ The dollar sign, the back quote and this character are still special when found in double quotes
+	$ End of line in a regular expression
+	: returns an exit status of zero
+	~ your home directory
+	[ABC] regular expression meaning A or B or Change
+	? special character that matches a single character in the shell
+	. This matches a single character in a regular expression
+	/ The root of the file system
+	$* all of the arguments passed to a shell script
+	$? exit status of previous command 
